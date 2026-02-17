@@ -11,11 +11,13 @@
 
 %% Set up
 
-% Arrival rate
-lambda = 1/2;
+% We'll measure time in hours
 
-% Departure (service) rate
-mu = 1/1.5;
+% Arrival rate: 10 per hour
+lambda = 10;
+
+% Departure (service) rate: 1 per 5 minutes, so 12 per hour
+mu = 12;
 
 % Number of serving stations
 s = 1;
@@ -23,8 +25,11 @@ s = 1;
 % Run 100 samples of the queue.
 NumSamples = 100;
 
-% Each sample is run up to a maximum time of 1000.
-MaxTime = 1000;
+% Each sample is run up to a maximum time.
+MaxTime = 96;
+
+% Make a log entry every so often
+LogInterval = 1/60;
 
 %% Numbers from theory for M/M/1 queue
 
@@ -43,7 +48,7 @@ end
 %% Run simulation samples
 
 % This is the most time consuming calculation in the script, so let's put
-% it in its own section.  That way, we can run it once, and more easlily
+% it in its own section.  That way, we can run it once, and more easily
 % run the faster calculations multiple times as we add features to this
 % script.
 
@@ -67,8 +72,8 @@ for SampleNum = 1:NumSamples
         ArrivalRate=lambda, ...
         DepartureRate=mu, ...
         NumServers=s, ...
-        LogInterval=10);
-    q.schedule_event(Arrival(1, Customer(1)));
+        LogInterval=LogInterval);
+    q.schedule_event(Arrival(random(q.InterArrivalDist), Customer(1)));
     run_until(q, MaxTime);
     QSamples{SampleNum} = q;
 end
@@ -237,11 +242,11 @@ t = tiledlayout(fig,1,1);
 ax = nexttile(t);
 
 % This time, the data is a list of real numbers, not integers.
-% The option BinWidth=0.5 means to use bins of width 0.5, and choose the
+% The option BinWidth=... means to use bins of a particular width, and choose the
 % left-most and right-most edges automatically.
 % Instead, you could specify the left-most and right-most edges explicitly.
-% Using BinEdges=0:0.5:60 means to use bins (0, 0.5), (0.5, 1.0), ...
-h = histogram(ax, TimeInSystem, Normalization="probability", BinWidth=0.5);
+% For instance, using BinEdges=0:0.5:60 means to use bins (0, 0.5), (0.5, 1.0), ...
+h = histogram(ax, TimeInSystem, Normalization="probability", BinWidth=5/60);
 
 % Add titles and labels and such.
 title(ax, "Time in the system");
@@ -249,8 +254,8 @@ xlabel(ax, "Time");
 ylabel(ax, "Probability");
 
 % Set ranges on the axes.
-ylim(ax, [0, 0.1]);
-xlim(ax, [-1, 21]);
+ylim(ax, [0, 0.2]);
+xlim(ax, [0, 2.0]);
 
 % Wait for MATLAB to catch up.
 pause(2);

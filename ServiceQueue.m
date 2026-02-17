@@ -1,27 +1,31 @@
 classdef ServiceQueue < handle
     % ServiceQueue Simulation object that keeps track of customer arrivals,
     % departures, and service.
+    % The default properties are for time measured in hours.
 
     properties (SetAccess = public)
         
         % ArrivalRate - Customers arrive according to a Poisson process.
         % The inter-arrival time is exponentially distributed with a rate
         % parameter of ArrivalRate.
-        ArrivalRate = 0.5;
+        % The default is 10 per hour (mean inter-arrival time of 6 minutes).
+        ArrivalRate = 10;
 
         % DepartureRate - When a customer arrives, the time it takes for
         % them to be served is exponentially distributed with a rate
         % parameter of DepartureRate.
-        DepartureRate = 1/1.5;
+        % The default is 12 per hour (mean service time of 5 minutes).
+        DepartureRate = 12;
 
         % NumServers - How many identical serving stations are available.
         NumServers = 1;
 
         % LogInterval - Approximately how many time units between log
         % entries.  Log events are scheduled so that when one log entry is
-        % recorded, the next is scheduled for the curren time plus this
+        % recorded, the next is scheduled for the current time plus this
         % interval.
-        LogInterval = 10;
+        % The default is 1/60 of an hour (1 minute)
+        LogInterval = 1/60;
     
     end
 

@@ -163,7 +163,7 @@ exportgraphics(fig, "Time in system histogram.pdf"); %[output:949b414d]
 %[text] c. $W=\\frac{5}{10}=\\frac{1}{2}$
 %[text] d. $W\_q = \\frac{10}{12(12-10)}=\\frac{10}{24}$
 %[text]           2\. 
-%[text] For the number of customers in system we have a 3.83% discrepancy between the theoretical value and the simulated value. For the time in the system we have a 3.95% dsicrepancy between the theoretical value and the simulated value. 
+%[text] For the number of customers in system we have a 3.83% discrepancy between the theoretical value and the simulated value. For the time in the system we have a 3.95% discrepancy between the theoretical value and the simulated value. 
 
 %[appendix]{"version":"1.0"}
 %---
